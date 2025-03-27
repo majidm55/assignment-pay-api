@@ -9,8 +9,8 @@ class User(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     first_name: str = Field(..., max_length=50)
     last_name: str = Field(..., max_length=50)
-    user_name: Optional[str] = Field(default=None, unique=True, max_length=100)
-    date_of_birth: str
+    user_name: Optional[str] = Field(default=None, unique=True, max_length=50),
+    date_of_birth: str = Field(..., max_length=50)
     created_at: Optional[datetime.datetime] = Field(default_factory=datetime.datetime.utcnow)
     updated_at: Optional[datetime.datetime] = Field(default_factory=datetime.datetime.utcnow, sa_column_kwargs={"onupdate": datetime.datetime.utcnow})
     
@@ -28,3 +28,8 @@ class User(SQLModel, table=True):
     
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
+
+
+class UserBase(SQLModel):
+    name: str = Field(index=True)
+    age: int | None = Field(default=None, index=True)
